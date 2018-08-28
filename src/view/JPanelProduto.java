@@ -5,6 +5,11 @@
  */
 package view;
 
+import java.awt.Window;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.SwingUtilities;
+
 /**
  *
  * @author vagner
@@ -52,6 +57,11 @@ public class JPanelProduto extends javax.swing.JPanel {
 
         jButton2.setActionCommand("");
         jButton2.setLabel("Fechar");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -106,6 +116,15 @@ public class JPanelProduto extends javax.swing.JPanel {
                 .addContainerGap())
         );
     }// </editor-fold>//GEN-END:initComponents
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        try {
+            Window w = SwingUtilities.getWindowAncestor(JPanelProduto.this);
+            w.setVisible(false);
+        } catch (Throwable ex) {
+            Logger.getLogger(JPanelProduto.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_jButton2ActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

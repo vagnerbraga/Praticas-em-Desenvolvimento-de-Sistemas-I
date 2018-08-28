@@ -6,6 +6,8 @@
 package view;
 
 import java.awt.BorderLayout;
+import java.awt.Dimension;
+import javax.swing.JDialog;
 
 /**
  *
@@ -13,6 +15,11 @@ import java.awt.BorderLayout;
  */
 public class Principal extends javax.swing.JFrame {
 
+    JPanelCliente jPanelCliente;
+    JPanelVenda jPanelVenda;
+    JPanelControleEstoque JPanelControleEstoque;
+    JPanelRelatorioPorPeriodo JPanelRelatorioPorPeriodo;
+    
     /**
      * Creates new form Principal
      */
@@ -32,26 +39,29 @@ public class Principal extends javax.swing.JFrame {
         jPanelConteudo = new javax.swing.JPanel();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
-        jMenuItem1 = new javax.swing.JMenuItem();
+        jMenuItemProoduto = new javax.swing.JMenuItem();
         jMenuItem2 = new javax.swing.JMenuItem();
         jMenu2 = new javax.swing.JMenu();
-        jMenuItem5 = new javax.swing.JMenuItem();
+        jMenuItemVender = new javax.swing.JMenuItem();
         jMenu4 = new javax.swing.JMenu();
-        jMenuItem3 = new javax.swing.JMenuItem();
+        jMenuItemEstoque = new javax.swing.JMenuItem();
         jMenu5 = new javax.swing.JMenu();
-        jMenuItem4 = new javax.swing.JMenuItem();
+        jMenuItemRelatorioVendas = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Posto de Gasolina Batista");
+
+        jPanelConteudo.setAutoscrolls(true);
 
         jMenu1.setText("Cadastro");
 
-        jMenuItem1.setText("Produto");
-        jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
+        jMenuItemProoduto.setText("Produto");
+        jMenuItemProoduto.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem1ActionPerformed(evt);
+                jMenuItemProodutoActionPerformed(evt);
             }
         });
-        jMenu1.add(jMenuItem1);
+        jMenu1.add(jMenuItemProoduto);
 
         jMenuItem2.setText("Cliente");
         jMenuItem2.addActionListener(new java.awt.event.ActionListener() {
@@ -65,22 +75,37 @@ public class Principal extends javax.swing.JFrame {
 
         jMenu2.setText("Vendas");
 
-        jMenuItem5.setText("Vender");
-        jMenu2.add(jMenuItem5);
+        jMenuItemVender.setText("Vender");
+        jMenuItemVender.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItemVenderActionPerformed(evt);
+            }
+        });
+        jMenu2.add(jMenuItemVender);
 
         jMenuBar1.add(jMenu2);
 
         jMenu4.setText("Estoque");
 
-        jMenuItem3.setText("Reservatorios");
-        jMenu4.add(jMenuItem3);
+        jMenuItemEstoque.setText("Reservatorios");
+        jMenuItemEstoque.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItemEstoqueActionPerformed(evt);
+            }
+        });
+        jMenu4.add(jMenuItemEstoque);
 
         jMenuBar1.add(jMenu4);
 
         jMenu5.setText("Relatorio");
 
-        jMenuItem4.setText("Vendas");
-        jMenu5.add(jMenuItem4);
+        jMenuItemRelatorioVendas.setText("Vendas");
+        jMenuItemRelatorioVendas.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItemRelatorioVendasActionPerformed(evt);
+            }
+        });
+        jMenu5.add(jMenuItemRelatorioVendas);
 
         jMenuBar1.add(jMenu5);
 
@@ -90,24 +115,68 @@ public class Principal extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanelConteudo, javax.swing.GroupLayout.DEFAULT_SIZE, 737, Short.MAX_VALUE)
+            .addComponent(jPanelConteudo, javax.swing.GroupLayout.DEFAULT_SIZE, 749, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanelConteudo, javax.swing.GroupLayout.DEFAULT_SIZE, 347, Short.MAX_VALUE)
+            .addComponent(jPanelConteudo, javax.swing.GroupLayout.DEFAULT_SIZE, 444, Short.MAX_VALUE)
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
-        // TODO add your handling code here:
+    private void jMenuItemProodutoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemProodutoActionPerformed
+        JDialog dialog  = new JDialog(this);
         
-    }//GEN-LAST:event_jMenuItem1ActionPerformed
+        dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+        dialog.setModal(true);
+        dialog.add(new JPanelProduto(), BorderLayout.CENTER);
+        dialog.pack();
+        dialog.setLocation(200, 200);
+        dialog.setTitle("Colour Dialog");
+        dialog.setVisible(true);
+        this.repaint();
+    }//GEN-LAST:event_jMenuItemProodutoActionPerformed
 
     private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
-        jPanelConteudo.add(new JPanelCliente(), BorderLayout.CENTER);
+        
+        this.jPanelConteudo.removeAll();
+        
+        this.jPanelCliente = new JPanelCliente();
+        this.jPanelConteudo.add(this.jPanelCliente);
+        this.repaint();
+        
+        //jPanelConteudo.add(new JPanelCliente(), BorderLayout.CENTER);
     }//GEN-LAST:event_jMenuItem2ActionPerformed
+
+    private void jMenuItemVenderActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemVenderActionPerformed
+        this.jPanelConteudo.removeAll();
+        
+        this.jPanelVenda = new JPanelVenda();
+        Dimension d = new Dimension(this.jPanelVenda.getPreferredSize().width, this.jPanelVenda.getPreferredSize().height);
+        this.setPreferredSize(d);
+        this.repaint();
+        this.jPanelConteudo.add(new JPanelVenda());
+        this.repaint();
+    }//GEN-LAST:event_jMenuItemVenderActionPerformed
+
+    private void jMenuItemEstoqueActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemEstoqueActionPerformed
+        
+        this.jPanelConteudo.removeAll();
+        
+        this.JPanelControleEstoque = new JPanelControleEstoque();
+        this.jPanelConteudo.add(this.JPanelControleEstoque);
+        this.repaint();
+        
+    }//GEN-LAST:event_jMenuItemEstoqueActionPerformed
+
+    private void jMenuItemRelatorioVendasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemRelatorioVendasActionPerformed
+        this.jPanelConteudo.removeAll();
+        
+        this.JPanelRelatorioPorPeriodo = new JPanelRelatorioPorPeriodo();
+        this.jPanelConteudo.add(this.JPanelRelatorioPorPeriodo);
+        this.repaint();
+    }//GEN-LAST:event_jMenuItemRelatorioVendasActionPerformed
 
     /**
      * @param args the command line arguments
@@ -150,11 +219,11 @@ public class Principal extends javax.swing.JFrame {
     private javax.swing.JMenu jMenu4;
     private javax.swing.JMenu jMenu5;
     private javax.swing.JMenuBar jMenuBar1;
-    private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JMenuItem jMenuItem2;
-    private javax.swing.JMenuItem jMenuItem3;
-    private javax.swing.JMenuItem jMenuItem4;
-    private javax.swing.JMenuItem jMenuItem5;
+    private javax.swing.JMenuItem jMenuItemEstoque;
+    private javax.swing.JMenuItem jMenuItemProoduto;
+    private javax.swing.JMenuItem jMenuItemRelatorioVendas;
+    private javax.swing.JMenuItem jMenuItemVender;
     private javax.swing.JPanel jPanelConteudo;
     // End of variables declaration//GEN-END:variables
 }

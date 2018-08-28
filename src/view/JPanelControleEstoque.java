@@ -9,12 +9,12 @@ package view;
  *
  * @author vagner
  */
-public class JPanelControleEstooque extends javax.swing.JPanel {
+public class JPanelControleEstoque extends javax.swing.JPanel {
 
     /**
      * Creates new form JPanelControleEstooque
      */
-    public JPanelControleEstooque() {
+    public JPanelControleEstoque() {
         initComponents();
     }
 
