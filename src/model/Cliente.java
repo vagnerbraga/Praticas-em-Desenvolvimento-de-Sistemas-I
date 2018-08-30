@@ -8,10 +8,15 @@ public class Cliente extends Entidade implements Serializable {
     private String cpf;
     private String rg;
 
+    public Cliente() {
+        super();
+    }
+
     public Cliente(String nome, String cpf, String rg) {
         this.nome = nome;
         this.cpf = cpf;
         this.rg = rg;
+        this.ativo = true;
     }
 
     public String getNome() {
