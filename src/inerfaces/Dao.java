@@ -1,5 +1,7 @@
 package inerfaces;
 
+import java.util.List;
+
 public interface Dao<T> {
  
     public void salvar(T entidade) throws  Exception;
@@ -10,4 +12,6 @@ public interface Dao<T> {
     
     public T selecionar(Long id) throws  Exception;
     
+    public List<T> buscarLista() throws Exception;
+        
 }

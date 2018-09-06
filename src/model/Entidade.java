@@ -4,7 +4,7 @@ import java.io.Serializable;
 import java.util.Objects;
 
 public abstract class Entidade implements Serializable{
-    
+
     protected Long id;
     protected boolean ativo;
 

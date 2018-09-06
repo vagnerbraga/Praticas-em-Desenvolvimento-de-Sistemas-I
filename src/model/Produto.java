@@ -1,7 +1,9 @@
 package model;
 
-public class Produto extends Entidade{
-    
+import java.io.Serializable;
+
+public class Produto extends Entidade implements Serializable{
+
     private String nome;
     private String tipoEmbalagem;
     private Double quantidadeEmbalagem;
@@ -44,4 +46,11 @@ public class Produto extends Entidade{
     public void setValor(Double valor) {
         this.valor = valor;
     }
+
+    @Override
+    public String toString() {
+        return this.nome + " " + this.getTipoEmbalagem() + " - " + this.getQuantidadeEmbalagem();
+    }
+    
+    
 }

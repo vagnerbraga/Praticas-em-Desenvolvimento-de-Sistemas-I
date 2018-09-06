@@ -5,10 +5,12 @@
  */
 package view;
 
+import controller.ProdutoController;
 import java.awt.Window;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.SwingUtilities;
+import model.Produto;
 
 /**
  *
@@ -16,11 +18,15 @@ import javax.swing.SwingUtilities;
  */
 public class JPanelProduto extends javax.swing.JPanel {
 
+    
+    private ProdutoController controller;
+    
     /**
      * Creates new form JPanelProduto
      */
     public JPanelProduto() {
         initComponents();
+        this.controller = new ProdutoController();
     }
 
     /**
@@ -40,8 +46,8 @@ public class JPanelProduto extends javax.swing.JPanel {
         jTextFieldTipoEmbalagem = new javax.swing.JTextField();
         jTextFieldQuantidadeEmbalagem = new javax.swing.JTextField();
         jTextFieldValorProduto = new javax.swing.JTextField();
-        jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
+        jButtonSalvar = new javax.swing.JButton();
+        jButtonFechar = new javax.swing.JButton();
 
         setPreferredSize(new java.awt.Dimension(600, 194));
 
@@ -53,13 +59,17 @@ public class JPanelProduto extends javax.swing.JPanel {
 
         jLabel4.setText("Valor:");
 
-        jButton1.setText("Salvar");
-
-        jButton2.setActionCommand("");
-        jButton2.setLabel("Fechar");
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
+        jButtonSalvar.setText("Salvar");
+        jButtonSalvar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
+                jButtonSalvarActionPerformed(evt);
+            }
+        });
+
+        jButtonFechar.setLabel("Fechar");
+        jButtonFechar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonFecharActionPerformed(evt);
             }
         });
 
@@ -79,7 +89,7 @@ public class JPanelProduto extends javax.swing.JPanel {
                                     .addComponent(jTextFieldTipoEmbalagem, javax.swing.GroupLayout.PREFERRED_SIZE, 249, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                     .addComponent(jTextFieldQuantidadeEmbalagem, javax.swing.GroupLayout.PREFERRED_SIZE, 161, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 114, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addComponent(jButtonSalvar, javax.swing.GroupLayout.PREFERRED_SIZE, 114, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(jLabel2)
                                 .addGap(147, 147, 147)
@@ -89,7 +99,7 @@ public class JPanelProduto extends javax.swing.JPanel {
                             .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                 .addComponent(jTextFieldValorProduto)
-                                .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, 125, Short.MAX_VALUE)))))
+                                .addComponent(jButtonFechar, javax.swing.GroupLayout.DEFAULT_SIZE, 125, Short.MAX_VALUE)))))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -111,25 +121,37 @@ public class JPanelProduto extends javax.swing.JPanel {
                     .addComponent(jTextFieldValorProduto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 49, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton1)
-                    .addComponent(jButton2))
+                    .addComponent(jButtonSalvar)
+                    .addComponent(jButtonFechar))
                 .addContainerGap())
         );
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+    private void jButtonFecharActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonFecharActionPerformed
         try {
             Window w = SwingUtilities.getWindowAncestor(JPanelProduto.this);
             w.setVisible(false);
         } catch (Throwable ex) {
             Logger.getLogger(JPanelProduto.class.getName()).log(Level.SEVERE, null, ex);
         }
-    }//GEN-LAST:event_jButton2ActionPerformed
+    }//GEN-LAST:event_jButtonFecharActionPerformed
+
+    private void jButtonSalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonSalvarActionPerformed
+        
+        this.controller.entidade.setAtivo(true);
+        this.controller.entidade.setNome(jTextFieldNomeProduto.getText());
+        this.controller.entidade.setTipoEmbalagem(jTextFieldTipoEmbalagem.getText());
+        this.controller.entidade.setQuantidadeEmbalagem(Double.parseDouble(jTextFieldQuantidadeEmbalagem.getText()));
+        this.controller.entidade.setValor(Double.parseDouble(jTextFieldValorProduto.getText()));
+        
+        this.controller.gravar();
+        
+    }//GEN-LAST:event_jButtonSalvarActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
+    private javax.swing.JButton jButtonFechar;
+    private javax.swing.JButton jButtonSalvar;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;

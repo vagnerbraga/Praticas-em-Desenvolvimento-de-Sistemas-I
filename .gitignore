@@ -26,3 +26,6 @@ build.xml
 manifest.mf
 /nbproject/
 /dist/
+
+# arquivo de banco de dados
+*.dat

@@ -1,7 +1,9 @@
 package model;
 
-public class ItemVenda extends Entidade {
-    
+import java.io.Serializable;
+
+public class ItemVenda extends Entidade implements Serializable{
+
     private Produto produto;
     private Integer quantidade;
 

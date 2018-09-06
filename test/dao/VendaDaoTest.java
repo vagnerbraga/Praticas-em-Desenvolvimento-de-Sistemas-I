@@ -75,11 +75,20 @@ public class VendaDaoTest {
     @Test
     public void testAlterar() throws Exception {
         System.out.println("alterar");
-        Venda entidade = null;
-        VendaDao instance = new VendaDao();
-        instance.alterar(entidade);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        Venda entidade = dao.selecionar(1L);
+        
+        ItemVenda it = new ItemVenda();
+        it.setProduto(new ProdutoDao().selecionar(1L));
+        it.setQuantidade(6);
+        
+        entidade.getItens().add(it);
+        
+        dao.alterar(entidade);
+        
+        entidade = dao.selecionar(1L);
+        
+        assertEquals("Total de itens não corresponde", 2, entidade.getItens().size());
+        
     }
 
     /**
@@ -88,11 +97,13 @@ public class VendaDaoTest {
     @Test
     public void testDeletar() throws Exception {
         System.out.println("deletar");
-        Venda entidade = null;
-        VendaDao instance = new VendaDao();
-        instance.deletar(entidade);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        Venda entidade = dao.selecionar(1L);
+        dao.deletar(entidade);
+        
+        entidade = dao.selecionar(1L);
+        
+        assertEquals("valor não corresponde com o previsto", false, entidade.isAtivo());
+
     }
 
     /**
@@ -101,41 +112,37 @@ public class VendaDaoTest {
     @Test
     public void testSelecionar() throws Exception {
         System.out.println("selecionar");
-        Long id = null;
-        VendaDao instance = new VendaDao();
-        Venda expResult = null;
-        Venda result = instance.selecionar(id);
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        Long id = 1L;
+        Venda result = dao.selecionar(id);
+        assertEquals("Ids da venda não deu certo", id, result.getId());
     }
 
     /**
      * Test of addicionarItem method, of class VendaDao.
      */
-    @Test
-    public void testAddicionarItem() {
-        System.out.println("addicionarItem");
-        Venda venda = null;
-        ItemVenda item = null;
-        VendaDao instance = new VendaDao();
-        instance.addicionarItem(venda, item);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
+//    @Test
+//    public void testAddicionarItem() {
+//        System.out.println("addicionarItem");
+//        Venda venda = null;
+//        ItemVenda item = null;
+//        VendaDao instance = new VendaDao();
+//        instance.addicionarItem(venda, item);
+//        // TODO review the generated test code and remove the default call to fail.
+//        fail("The test case is a prototype.");
+//    }
 
     /**
      * Test of removerItem method, of class VendaDao.
      */
-    @Test
-    public void testRemoverItem() {
-        System.out.println("removerItem");
-        Venda venda = null;
-        ItemVenda item = null;
-        VendaDao instance = new VendaDao();
-        instance.removerItem(venda, item);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
+//    @Test
+//    public void testRemoverItem() {
+//        System.out.println("removerItem");
+//        Venda venda = null;
+//        ItemVenda item = null;
+//        VendaDao instance = new VendaDao();
+//        instance.removerItem(venda, item);
+//        // TODO review the generated test code and remove the default call to fail.
+//        fail("The test case is a prototype.");
+//    }
     
 }

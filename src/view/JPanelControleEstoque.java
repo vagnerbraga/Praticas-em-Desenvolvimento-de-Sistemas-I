@@ -5,6 +5,19 @@
  */
 package view;
 
+import controller.EstoqueController;
+import dao.ControleEstoqueDao;
+import dao.ProdutoDao;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Vector;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.DefaultComboBoxModel;
+import javax.swing.JScrollPane;
+import model.ControleEstoque;
+import model.Produto;
+
 /**
  *
  * @author vagner
@@ -14,8 +27,23 @@ public class JPanelControleEstoque extends javax.swing.JPanel {
     /**
      * Creates new form JPanelControleEstooque
      */
+    
+    private ProdutoDao produtoDao;
+    private List<Produto> produtos;
+    private EstoqueController controller;
+    private ControleEstoqueDao dao;
+    private List<ControleEstoque> lista;
+    
     public JPanelControleEstoque() {
         initComponents();
+        this.produtoDao = new ProdutoDao();
+        this.produtos = new ArrayList<>();
+        this.controller = new EstoqueController();
+        this.dao = new ControleEstoqueDao();
+        this.lista = new ArrayList<>();
+        this.atualizarProduto();
+        this.atualizarTabela();
+        this.limparCampos();
     }
 
     /**
@@ -31,20 +59,60 @@ public class JPanelControleEstoque extends javax.swing.JPanel {
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jTextFieldQuantidadeEstoque = new javax.swing.JTextField();
-        jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
+        jButtonSalvar = new javax.swing.JButton();
+        jButtonFechar = new javax.swing.JButton();
+        jButtonAtualizarProdutos = new javax.swing.JButton();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        jTableEstoque = new javax.swing.JTable();
 
         setPreferredSize(new java.awt.Dimension(600, 194));
-
-        jComboBoxProdutoEstoque.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
         jLabel1.setText("Produto:");
 
         jLabel2.setText("Quantidade:");
 
-        jButton1.setText("Salvar");
+        jButtonSalvar.setText("Adicionar Qtd.");
+        jButtonSalvar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonSalvarActionPerformed(evt);
+            }
+        });
 
-        jButton2.setText("Fechar");
+        jButtonFechar.setText("Fechar");
+        jButtonFechar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonFecharActionPerformed(evt);
+            }
+        });
+
+        jButtonAtualizarProdutos.setFont(new java.awt.Font("Dialog", 1, 9)); // NOI18N
+        jButtonAtualizarProdutos.setText("Atualizar");
+        jButtonAtualizarProdutos.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonAtualizarProdutosActionPerformed(evt);
+            }
+        });
+
+        jTableEstoque.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null},
+                {null, null, null},
+                {null, null, null},
+                {null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Título 3"
+            }
+        ));
+        jTableEstoque.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jTableEstoqueMouseClicked(evt);
+            }
+        });
+        jScrollPane1.setViewportView(jTableEstoque);
+        if (jTableEstoque.getColumnModel().getColumnCount() > 0) {
+            jTableEstoque.getColumnModel().getColumn(0).setResizable(false);
+        }
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -53,18 +121,22 @@ public class JPanelControleEstoque extends javax.swing.JPanel {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jComboBoxProdutoEstoque, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jScrollPane1)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jComboBoxProdutoEstoque, javax.swing.GroupLayout.PREFERRED_SIZE, 500, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jButtonAtualizarProdutos, javax.swing.GroupLayout.DEFAULT_SIZE, 115, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jTextFieldQuantidadeEstoque, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jButtonSalvar, javax.swing.GroupLayout.PREFERRED_SIZE, 157, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jButtonFechar, javax.swing.GroupLayout.PREFERRED_SIZE, 157, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel1)
                             .addComponent(jLabel2))
-                        .addGap(0, 0, Short.MAX_VALUE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(jTextFieldQuantidadeEstoque, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 139, Short.MAX_VALUE)
-                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 157, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 157, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -73,26 +145,109 @@ public class JPanelControleEstoque extends javax.swing.JPanel {
                 .addContainerGap()
                 .addComponent(jLabel1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jComboBoxProdutoEstoque, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jComboBoxProdutoEstoque, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButtonAtualizarProdutos))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel2)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jTextFieldQuantidadeEstoque, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 27, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton1)
-                    .addComponent(jButton2))
-                .addContainerGap())
+                    .addComponent(jTextFieldQuantidadeEstoque, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButtonSalvar)
+                    .addComponent(jButtonFechar))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 162, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(26, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
+    private void jButtonAtualizarProdutosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonAtualizarProdutosActionPerformed
+        this.atualizarProduto();
+    }//GEN-LAST:event_jButtonAtualizarProdutosActionPerformed
+
+    public void limparCampos(){
+        this.jComboBoxProdutoEstoque.setSelectedIndex(-1);
+        this.jTextFieldQuantidadeEstoque.setText("");
+        this.repaint();
+    }
+    
+    private void jButtonSalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonSalvarActionPerformed
+        
+        this.controller.entidade.setProduto(produtos.get(this.jComboBoxProdutoEstoque.getSelectedIndex()));
+        this.controller.entidade.setQuantidade(Double.parseDouble(this.jTextFieldQuantidadeEstoque.getText()));
+        
+        this.controller.gravar();
+        
+        this.controller.limpar();
+        this.limparCampos();
+        this.atualizarTabela();
+        this.repaint();
+        
+    }//GEN-LAST:event_jButtonSalvarActionPerformed
+
+    private void jButtonFecharActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonFecharActionPerformed
+        this.setVisible(false);
+    }//GEN-LAST:event_jButtonFecharActionPerformed
+
+    private void jTableEstoqueMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTableEstoqueMouseClicked
+        this.controller.entidade = this.lista.get(this.jTableEstoque.getSelectedRow());
+        
+        //this.jComboBoxProdutoEstoque.setSelectedIndex(this.);
+        
+    }//GEN-LAST:event_jTableEstoqueMouseClicked
+
+    private void atualizarProduto(){
+        try {
+            this.produtos.clear();
+            this.produtos = this.produtoDao.buscarLista();
+            this.jComboBoxProdutoEstoque.removeAllItems();
+            this.jComboBoxProdutoEstoque.setSelectedIndex(-1);
+            produtos.forEach((produto) -> {
+                this.jComboBoxProdutoEstoque.addItem(produto.toString());
+            });
+            this.repaint();
+        } catch (Exception ex) {
+            Logger.getLogger(JPanelControleEstoque.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
+    private javax.swing.JButton jButtonAtualizarProdutos;
+    private javax.swing.JButton jButtonFechar;
+    private javax.swing.JButton jButtonSalvar;
     private javax.swing.JComboBox<String> jComboBoxProdutoEstoque;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JTable jTableEstoque;
     private javax.swing.JTextField jTextFieldQuantidadeEstoque;
     // End of variables declaration//GEN-END:variables
+
+    private void atualizarTabela() {
+        
+        try {
+            
+            this.lista = this.dao.buscarLista();
+            Vector<Vector> rowsData = new Vector<Vector>();
+            
+            
+            this.lista.forEach((item)->{
+                Vector<String> v = new Vector<String>();
+                v.addElement(item.getProduto().getNome());
+                v.addElement(item.getQuantidade().toString());
+                rowsData.addElement(v);
+            });
+            Vector<String> columnNames = new Vector<String>();
+            columnNames.addElement("Produto");
+            columnNames.addElement("Quantidade");
+            this.jTableEstoque.setModel(new javax.swing.table.DefaultTableModel(
+                rowsData, columnNames
+            ));
+
+        } catch (Exception ex) {
+            Logger.getLogger(JPanelControleEstoque.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+    }
 }

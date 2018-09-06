@@ -3,7 +3,7 @@ package model;
 import java.io.Serializable;
 
 public class Cliente extends Entidade implements Serializable {
-    
+
     private String nome;
     private String cpf;
     private String rg;

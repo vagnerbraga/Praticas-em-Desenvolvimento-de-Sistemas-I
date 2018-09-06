@@ -1,5 +1,6 @@
 package dao;
 
+import java.util.List;
 import model.Produto;
 import org.junit.After;
 import org.junit.AfterClass;
@@ -101,6 +102,19 @@ public class ProdutoDaoTest {
         Long id = 1L;
         Produto result = dao.selecionar(id);
         assertEquals("Valores não estão certos", id, result.getId());
+    }
+ 
+    @Test
+    public void testBuscarLista() throws Exception{
+        System.out.println("buscar Lista");
+        List<Produto> lista = dao.buscarLista();
+        
+        lista.forEach((item)->{
+            System.out.println("dao.ProdutoDaoTest.testBuscarLista() " + item.getNome());
+        });
+        
+        assertEquals("total de itens não corresponde ", 2, lista.size());
+        
     }
     
 }

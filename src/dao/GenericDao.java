@@ -93,8 +93,9 @@ public class GenericDao<T extends Entidade> implements Dao<T>{
         return null;
     }
     
-    protected List<T> buscarLista() throws Exception {
+    public List<T> buscarLista() throws Exception {
         //recupera a lista
         return (List<T>)Arquivo.recuperar(this.nomeArquivo);
     }
+
 }

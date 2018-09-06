@@ -1,6 +1,8 @@
 package model;
 
-public class ControleEstoque extends Entidade {
+import java.io.Serializable;
+
+public class ControleEstoque extends Entidade implements Serializable{
     
     private Produto produto;
     private Double quantidade;

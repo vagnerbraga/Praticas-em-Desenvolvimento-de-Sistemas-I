@@ -1,14 +1,15 @@
 package model;
 
 import enumered.FormaPagamentoEnum;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.function.Consumer;
 import util.Constraint;
 
-public class Venda extends Entidade {
-    
+public class Venda extends Entidade implements Serializable{
+
     private Cliente cliente;
     private Date data;
     private Double totalVenda;
