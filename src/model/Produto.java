@@ -1,6 +1,8 @@
 package model;
 
+import inerfaces.IPreparaDadosParaTabela;
 import java.io.Serializable;
+import java.util.Vector;
 
 public class Produto extends Entidade implements Serializable{
 
@@ -50,6 +52,26 @@ public class Produto extends Entidade implements Serializable{
     @Override
     public String toString() {
         return this.nome + " " + this.getTipoEmbalagem() + " - " + this.getQuantidadeEmbalagem();
+    }
+
+    @Override
+    public Vector toVectorDados() {
+        Vector<String> v = new Vector<String>();
+        v.addElement(this.nome);
+        v.addElement(this.tipoEmbalagem);        
+        v.addElement(this.quantidadeEmbalagem.toString());
+        v.addElement(this.valor.toString());
+        return v;
+    }
+
+    @Override
+    public Vector<String> toVectorColumn() {
+        Vector<String> columnNames = new Vector<String>();
+        columnNames.addElement("Nome");
+        columnNames.addElement("Tipo Embalagem");
+        columnNames.addElement("Qtd. Emb.");
+        columnNames.addElement("Valor");
+        return columnNames;
     }
     
     

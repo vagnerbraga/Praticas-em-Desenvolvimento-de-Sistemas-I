@@ -5,17 +5,29 @@
  */
 package view;
 
+import controller.ClienteController;
+import enumered.SexoEnum;
+import javax.swing.DefaultComboBoxModel;
+import util.Configura;
+import util.Mensagem;
+
 /**
  *
  * @author vagner
  */
 public class JPanelCliente extends javax.swing.JPanel {
 
+    
+    private ClienteController controller;
+    
     /**
      * Creates new form JPanelCliente
      */
     public JPanelCliente() {
         initComponents();
+        this.controller = new ClienteController();
+        
+        this.atualizarTabela();
     }
 
     /**
@@ -37,6 +49,8 @@ public class JPanelCliente extends javax.swing.JPanel {
         jComboBoxSexoCliente = new javax.swing.JComboBox<>();
         jButtonSalvar = new javax.swing.JButton();
         jButtonFechar = new javax.swing.JButton();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        jTableClientes = new javax.swing.JTable();
 
         jLabel1.setText("Nome:");
 
@@ -46,7 +60,8 @@ public class JPanelCliente extends javax.swing.JPanel {
 
         jLabel4.setText("Sexo:");
 
-        jComboBoxSexoCliente.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        jComboBoxSexoCliente.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "MASCULINO", "FEMININO" }));
+        jComboBoxSexoCliente.setSelectedIndex(-1);
 
         jButtonSalvar.setText("Salvar");
         jButtonSalvar.setPreferredSize(new java.awt.Dimension(20, 31));
@@ -58,6 +73,24 @@ public class JPanelCliente extends javax.swing.JPanel {
 
         jButtonFechar.setText("Fechar");
         jButtonFechar.setPreferredSize(new java.awt.Dimension(20, 31));
+        jButtonFechar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonFecharActionPerformed(evt);
+            }
+        });
+
+        jTableClientes.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ));
+        jScrollPane1.setViewportView(jTableClientes);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -66,6 +99,7 @@ public class JPanelCliente extends javax.swing.JPanel {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane1)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jComboBoxSexoCliente, javax.swing.GroupLayout.PREFERRED_SIZE, 235, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -97,9 +131,9 @@ public class JPanelCliente extends javax.swing.JPanel {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jTextFieldNomeCliente, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel2)
-                    .addComponent(jLabel3))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel3)
+                    .addComponent(jLabel2))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jTextFieldCpfCliente, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -111,15 +145,78 @@ public class JPanelCliente extends javax.swing.JPanel {
                     .addComponent(jComboBoxSexoCliente, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jButtonSalvar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jButtonFechar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 186, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(25, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
+    private boolean validaDados(){
+        
+        if(jTextFieldNomeCliente.getText().trim().isEmpty()){
+            Mensagem.mostrar(this, "Campo nome não poe ser vazio");
+            jTextFieldNomeCliente.requestFocus();
+            return false;
+        }
+        
+        if(jTextFieldCpfCliente.getText().trim().isEmpty()){
+            Mensagem.mostrar(this, "Campo CPF não poe ser vazio");
+            jTextFieldCpfCliente.requestFocus();
+            return false;
+        }
+        
+        if(jTextFieldRgCliente.getText().trim().isEmpty()){
+            Mensagem.mostrar(this, "Campo RG não poe ser vazio");
+            jTextFieldRgCliente.requestFocus();
+            return false;
+        }
+        
+        if(jComboBoxSexoCliente.getSelectedIndex() < 0){
+            Mensagem.mostrar(this, "Campo Sexo não poe ser vazio");
+            return false;
+        }
+        return true;
+    }
+    
     private void jButtonSalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonSalvarActionPerformed
-        // TODO add your handling code here:
+        if(this.validaDados()){
+            this.controller.entidade.setNome(this.jTextFieldNomeCliente.getText());
+            this.controller.entidade.setRg(this.jTextFieldRgCliente.getText());
+            this.controller.entidade.setCpf(this.jTextFieldCpfCliente.getText());
+            this.controller.entidade.setSexo(SexoEnum.values()[this.jComboBoxSexoCliente.getSelectedIndex()]);
+            this.controller.gravar();
+            
+            this.limparCampos();
+            this.atualizarTabela();
+            
+        }
     }//GEN-LAST:event_jButtonSalvarActionPerformed
 
+    private void jButtonFecharActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonFecharActionPerformed
+        this.setVisible(false);
+    }//GEN-LAST:event_jButtonFecharActionPerformed
 
+    private void limparCampos(){
+        this.jTextFieldNomeCliente.setText("");
+        this.jTextFieldRgCliente.setText("");
+        this.jTextFieldCpfCliente.setText("");
+        this.jComboBoxSexoCliente.setSelectedIndex(-1);
+    }
+    
+    private void configuraComboSexo(){
+        this.jComboBoxSexoCliente.removeAll();
+        this.jComboBoxSexoCliente.setSelectedIndex(-1);
+        this.jComboBoxSexoCliente.addItem(SexoEnum.MASCULINO.getLabel());
+        this.jComboBoxSexoCliente.addItem(SexoEnum.FEMININO.getLabel());
+        this.jComboBoxSexoCliente.repaint();
+    }
+    
+    private void atualizarTabela(){
+        this.controller.buscarLista();
+        Configura.tabela(this.jTableClientes, this.controller.lista);
+        this.repaint();
+    }
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButtonFechar;
     private javax.swing.JButton jButtonSalvar;
@@ -128,6 +225,8 @@ public class JPanelCliente extends javax.swing.JPanel {
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JTable jTableClientes;
     private javax.swing.JTextField jTextFieldCpfCliente;
     private javax.swing.JTextField jTextFieldNomeCliente;
     private javax.swing.JTextField jTextFieldRgCliente;

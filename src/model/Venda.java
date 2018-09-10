@@ -5,6 +5,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Vector;
 import java.util.function.Consumer;
 import util.Constraint;
 
@@ -97,5 +98,15 @@ public class Venda extends Entidade implements Serializable{
     }
     public void setPago(boolean pago) {
         this.pago = pago;
+    }
+
+    @Override
+    public Vector toVectorDados() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public Vector<String> toVectorColumn() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 }

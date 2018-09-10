@@ -10,7 +10,9 @@ import java.awt.Window;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.SwingUtilities;
-import model.Produto;
+import org.apache.commons.lang3.StringUtils;
+import util.Configura;
+import util.Mensagem;
 
 /**
  *
@@ -26,7 +28,10 @@ public class JPanelProduto extends javax.swing.JPanel {
      */
     public JPanelProduto() {
         initComponents();
+        
         this.controller = new ProdutoController();
+        this.limparCampos();
+        this.atualizarTabela();
     }
 
     /**
@@ -48,16 +53,36 @@ public class JPanelProduto extends javax.swing.JPanel {
         jTextFieldValorProduto = new javax.swing.JTextField();
         jButtonSalvar = new javax.swing.JButton();
         jButtonFechar = new javax.swing.JButton();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        jTableProdutos = new javax.swing.JTable();
 
+        setToolTipText("");
         setPreferredSize(new java.awt.Dimension(600, 194));
+        setLayout(null);
 
         jLabel1.setText("Nome:");
+        add(jLabel1);
+        jLabel1.setBounds(6, 6, 45, 15);
+        add(jTextFieldNomeProduto);
+        jTextFieldNomeProduto.setBounds(6, 27, 587, 23);
 
         jLabel2.setText("Tipo de Embalagem:");
+        add(jLabel2);
+        jLabel2.setBounds(6, 56, 142, 15);
 
         jLabel3.setText("Quantidade Embalagem:");
+        add(jLabel3);
+        jLabel3.setBounds(267, 56, 173, 15);
 
         jLabel4.setText("Valor:");
+        add(jLabel4);
+        jLabel4.setBounds(452, 56, 80, 15);
+        add(jTextFieldTipoEmbalagem);
+        jTextFieldTipoEmbalagem.setBounds(6, 77, 249, 23);
+        add(jTextFieldQuantidadeEmbalagem);
+        jTextFieldQuantidadeEmbalagem.setBounds(267, 77, 161, 23);
+        add(jTextFieldValorProduto);
+        jTextFieldValorProduto.setBounds(452, 77, 141, 23);
 
         jButtonSalvar.setText("Salvar");
         jButtonSalvar.addActionListener(new java.awt.event.ActionListener() {
@@ -65,6 +90,8 @@ public class JPanelProduto extends javax.swing.JPanel {
                 jButtonSalvarActionPerformed(evt);
             }
         });
+        add(jButtonSalvar);
+        jButtonSalvar.setBounds(332, 106, 114, 31);
 
         jButtonFechar.setLabel("Fechar");
         jButtonFechar.addActionListener(new java.awt.event.ActionListener() {
@@ -72,59 +99,24 @@ public class JPanelProduto extends javax.swing.JPanel {
                 jButtonFecharActionPerformed(evt);
             }
         });
+        add(jButtonFechar);
+        jButtonFechar.setBounds(452, 106, 141, 31);
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
-        this.setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jLabel1)
-                    .addComponent(jTextFieldNomeProduto)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                .addGroup(layout.createSequentialGroup()
-                                    .addComponent(jTextFieldTipoEmbalagem, javax.swing.GroupLayout.PREFERRED_SIZE, 249, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                    .addComponent(jTextFieldQuantidadeEmbalagem, javax.swing.GroupLayout.PREFERRED_SIZE, 161, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addComponent(jButtonSalvar, javax.swing.GroupLayout.PREFERRED_SIZE, 114, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel2)
-                                .addGap(147, 147, 147)
-                                .addComponent(jLabel3)))
-                        .addGap(18, 18, Short.MAX_VALUE)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                .addComponent(jTextFieldValorProduto)
-                                .addComponent(jButtonFechar, javax.swing.GroupLayout.DEFAULT_SIZE, 125, Short.MAX_VALUE)))))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jLabel1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jTextFieldNomeProduto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel2)
-                    .addComponent(jLabel3)
-                    .addComponent(jLabel4))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jTextFieldTipoEmbalagem, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jTextFieldQuantidadeEmbalagem, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jTextFieldValorProduto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 49, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButtonSalvar)
-                    .addComponent(jButtonFechar))
-                .addContainerGap())
-        );
+        jTableProdutos.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ));
+        jScrollPane2.setViewportView(jTableProdutos);
+
+        add(jScrollPane2);
+        jScrollPane2.setBounds(6, 143, 587, 168);
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButtonFecharActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonFecharActionPerformed
@@ -136,18 +128,48 @@ public class JPanelProduto extends javax.swing.JPanel {
         }
     }//GEN-LAST:event_jButtonFecharActionPerformed
 
+    private boolean validaDados(){
+        if(!StringUtils.isNumeric(this.jTextFieldQuantidadeEmbalagem.getText())){
+            Mensagem.mostrar(this, "Quantidade de Embalagem é um numero inteiro");
+            this.jTextFieldQuantidadeEmbalagem.requestFocus();
+            return false;
+        }
+        if(!StringUtils.isNumeric(this.jTextFieldValorProduto.getText())){
+            Mensagem.mostrar(this, "O valor do produto não pode conter letras");
+            this.jTextFieldValorProduto.requestFocus();
+            return false;
+        }        
+        return true;
+    }
+    
     private void jButtonSalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonSalvarActionPerformed
         
-        this.controller.entidade.setAtivo(true);
-        this.controller.entidade.setNome(jTextFieldNomeProduto.getText());
-        this.controller.entidade.setTipoEmbalagem(jTextFieldTipoEmbalagem.getText());
-        this.controller.entidade.setQuantidadeEmbalagem(Double.parseDouble(jTextFieldQuantidadeEmbalagem.getText()));
-        this.controller.entidade.setValor(Double.parseDouble(jTextFieldValorProduto.getText()));
-        
-        this.controller.gravar();
-        
+        if(this.validaDados()){
+            this.controller.entidade.setAtivo(true);
+            this.controller.entidade.setNome(this.jTextFieldNomeProduto.getText());
+            this.controller.entidade.setTipoEmbalagem(this.jTextFieldTipoEmbalagem.getText());
+            this.controller.entidade.setQuantidadeEmbalagem(Double.parseDouble(this.jTextFieldQuantidadeEmbalagem.getText()));
+            this.controller.entidade.setValor(Double.parseDouble(this.jTextFieldValorProduto.getText()));
+
+            this.controller.gravar();
+            this.limparCampos();
+            this.atualizarTabela();
+        }            
     }//GEN-LAST:event_jButtonSalvarActionPerformed
 
+    public void limparCampos(){
+        this.jTextFieldNomeProduto.setText("");
+        this.jTextFieldTipoEmbalagem.setText("");
+        this.jTextFieldQuantidadeEmbalagem.setText("");
+        this.jTextFieldValorProduto.setText("");
+    }
+    
+    private void atualizarTabela() {
+        this.controller.buscarLista();
+        Configura.tabela(this.jTableProdutos, this.controller.lista);
+        this.jTableProdutos.repaint();
+        
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButtonFechar;
@@ -156,6 +178,8 @@ public class JPanelProduto extends javax.swing.JPanel {
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
+    private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JTable jTableProdutos;
     private javax.swing.JTextField jTextFieldNomeProduto;
     private javax.swing.JTextField jTextFieldQuantidadeEmbalagem;
     private javax.swing.JTextField jTextFieldTipoEmbalagem;

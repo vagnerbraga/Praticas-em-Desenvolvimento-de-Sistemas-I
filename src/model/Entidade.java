@@ -1,9 +1,10 @@
 package model;
 
+import inerfaces.IPreparaDadosParaTabela;
 import java.io.Serializable;
 import java.util.Objects;
 
-public abstract class Entidade implements Serializable{
+public abstract class Entidade implements Serializable, IPreparaDadosParaTabela{
 
     protected Long id;
     protected boolean ativo;

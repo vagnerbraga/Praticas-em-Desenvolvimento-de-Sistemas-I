@@ -8,6 +8,7 @@ package view;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import javax.swing.JDialog;
+import util.Configura;
 
 /**
  *
@@ -25,6 +26,7 @@ public class Principal extends javax.swing.JFrame {
      */
     public Principal() {
         initComponents();
+        this.setLocationRelativeTo(null);
     }
 
     /**
@@ -132,9 +134,10 @@ public class Principal extends javax.swing.JFrame {
         dialog.setModal(true);
         dialog.add(new JPanelProduto(), BorderLayout.CENTER);
         dialog.pack();
-        dialog.setLocation(200, 200);
+        dialog.setLocation(300, 300);
         dialog.setTitle("Colour Dialog");
         dialog.setVisible(true);
+//        dialog.setLocationRelativeTo(this);
         this.repaint();
     }//GEN-LAST:event_jMenuItemProodutoActionPerformed
 

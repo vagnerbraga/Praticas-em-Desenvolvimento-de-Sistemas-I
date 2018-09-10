@@ -10,13 +10,13 @@ import dao.ControleEstoqueDao;
 import dao.ProdutoDao;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.DefaultComboBoxModel;
-import javax.swing.JScrollPane;
 import model.ControleEstoque;
 import model.Produto;
+import org.apache.commons.lang3.StringUtils;
+import util.Configura;
+import util.Mensagem;
 
 /**
  *
@@ -40,7 +40,7 @@ public class JPanelControleEstoque extends javax.swing.JPanel {
         this.produtos = new ArrayList<>();
         this.controller = new EstoqueController();
         this.dao = new ControleEstoqueDao();
-        this.lista = new ArrayList<>();
+        this.lista = new ArrayList<ControleEstoque>();
         this.atualizarProduto();
         this.atualizarTabela();
         this.limparCampos();
@@ -125,7 +125,7 @@ public class JPanelControleEstoque extends javax.swing.JPanel {
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jComboBoxProdutoEstoque, javax.swing.GroupLayout.PREFERRED_SIZE, 500, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jButtonAtualizarProdutos, javax.swing.GroupLayout.DEFAULT_SIZE, 115, Short.MAX_VALUE))
+                        .addComponent(jButtonAtualizarProdutos, javax.swing.GroupLayout.DEFAULT_SIZE, 82, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jTextFieldQuantidadeEstoque, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -155,9 +155,9 @@ public class JPanelControleEstoque extends javax.swing.JPanel {
                     .addComponent(jTextFieldQuantidadeEstoque, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jButtonSalvar)
                     .addComponent(jButtonFechar))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 173, Short.MAX_VALUE)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 162, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(26, Short.MAX_VALUE))
+                .addGap(58, 58, 58))
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -170,19 +170,40 @@ public class JPanelControleEstoque extends javax.swing.JPanel {
         this.jTextFieldQuantidadeEstoque.setText("");
         this.repaint();
     }
-    
+    private boolean validaDados() {
+        
+        if(this.jComboBoxProdutoEstoque.getSelectedIndex() < 0){
+            Mensagem.mostrar(this, "É necessario selecionar um produto");
+            return false;
+        }
+        if(this.jTextFieldQuantidadeEstoque.getText().trim().isEmpty()){
+            Mensagem.mostrar(this, "A quantidade não pode ser vazia.");
+            this.jTextFieldQuantidadeEstoque.requestFocus();
+            return false;
+        }
+        if(!StringUtils.isNumeric(this.jTextFieldQuantidadeEstoque.getText())){
+            Mensagem.mostrar(this, "A quantidade é um numero inteiro.");
+            this.jTextFieldQuantidadeEstoque.requestFocus();
+            return false;
+        }
+        
+        return true;
+    }
+
+
     private void jButtonSalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonSalvarActionPerformed
         
-        this.controller.entidade.setProduto(produtos.get(this.jComboBoxProdutoEstoque.getSelectedIndex()));
-        this.controller.entidade.setQuantidade(Double.parseDouble(this.jTextFieldQuantidadeEstoque.getText()));
-        
-        this.controller.gravar();
-        
-        this.controller.limpar();
-        this.limparCampos();
-        this.atualizarTabela();
-        this.repaint();
-        
+        if(this.validaDados()){
+            this.controller.entidade.setProduto(produtos.get(this.jComboBoxProdutoEstoque.getSelectedIndex()));
+            this.controller.entidade.setQuantidade(Double.parseDouble(this.jTextFieldQuantidadeEstoque.getText()));
+
+            this.controller.gravar();
+
+            this.controller.limpar();
+            this.limparCampos();
+            this.atualizarTabela();
+        }
+             
     }//GEN-LAST:event_jButtonSalvarActionPerformed
 
     private void jButtonFecharActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonFecharActionPerformed
@@ -205,6 +226,7 @@ public class JPanelControleEstoque extends javax.swing.JPanel {
             produtos.forEach((produto) -> {
                 this.jComboBoxProdutoEstoque.addItem(produto.toString());
             });
+            this.limparCampos();
             this.repaint();
         } catch (Exception ex) {
             Logger.getLogger(JPanelControleEstoque.class.getName()).log(Level.SEVERE, null, ex);
@@ -224,27 +246,11 @@ public class JPanelControleEstoque extends javax.swing.JPanel {
     private javax.swing.JTextField jTextFieldQuantidadeEstoque;
     // End of variables declaration//GEN-END:variables
 
-    private void atualizarTabela() {
-        
-        try {
-            
-            this.lista = this.dao.buscarLista();
-            Vector<Vector> rowsData = new Vector<Vector>();
-            
-            
-            this.lista.forEach((item)->{
-                Vector<String> v = new Vector<String>();
-                v.addElement(item.getProduto().getNome());
-                v.addElement(item.getQuantidade().toString());
-                rowsData.addElement(v);
-            });
-            Vector<String> columnNames = new Vector<String>();
-            columnNames.addElement("Produto");
-            columnNames.addElement("Quantidade");
-            this.jTableEstoque.setModel(new javax.swing.table.DefaultTableModel(
-                rowsData, columnNames
-            ));
-
+    private void atualizarTabela() {        
+        try {           
+            this.controller.buscarLista();
+            Configura.tabela(this.jTableEstoque, this.controller.lista);
+            this.repaint();
         } catch (Exception ex) {
             Logger.getLogger(JPanelControleEstoque.class.getName()).log(Level.SEVERE, null, ex);
         }

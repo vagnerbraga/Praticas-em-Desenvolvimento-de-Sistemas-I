@@ -1,6 +1,7 @@
 package model;
 
 import java.io.Serializable;
+import java.util.Vector;
 
 public class ControleEstoque extends Entidade implements Serializable{
     
@@ -30,6 +31,22 @@ public class ControleEstoque extends Entidade implements Serializable{
 
     public void setQuantidade(Double quantidade) {
         this.quantidade = quantidade;
+    }
+
+    @Override
+    public Vector toVectorDados() {
+        Vector<String> v = new Vector<String>();
+        v.addElement(this.produto.getNome());
+        v.addElement(this.quantidade.toString());
+        return v;
+    }
+
+    @Override
+    public Vector<String> toVectorColumn() {
+        Vector<String> columnNames = new Vector<String>();
+        columnNames.addElement("Produto");
+        columnNames.addElement("Quantidade");
+        return columnNames;
     }
     
 }
