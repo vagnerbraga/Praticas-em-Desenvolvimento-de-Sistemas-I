@@ -5,6 +5,25 @@
  */
 package view;
 
+import controller.VendaController;
+import dao.ClienteDao;
+import dao.ProdutoDao;
+import dao.VendaDao;
+import enumered.FormaPagamentoEnum;
+import java.text.SimpleDateFormat;
+import java.util.Formatter;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JFormattedTextField;
+import model.Cliente;
+import model.Produto;
+import model.Venda;
+import org.apache.commons.lang3.StringUtils;
+import util.Configura;
+import util.Data;
+import util.Mensagem;
+
 /**
  *
  * @author vagner
@@ -14,10 +33,46 @@ public class JPanelVenda extends javax.swing.JPanel {
     /**
      * Creates new form JPanelVenda
      */
+    
+    private VendaController controller;
+    private List<Cliente> clientes;
+    private List<Produto> produtos;
+    
     public JPanelVenda() {
-        initComponents();
+        try {
+            initComponents();
+            
+            this.controller = new VendaController();
+            this.clientes = new ClienteDao().buscarLista();
+            this.produtos = new ProdutoDao().buscarLista();
+            
+            this.atualizaComboCliente();
+            this.atualizaComboProduto();
+            this.atualizaTabelaItemVenda();
+            this.limparCampos();
+        } catch (Exception ex) {
+            Logger.getLogger(JPanelVenda.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
+    private void atualizaComboCliente(){
+        
+        try {
+            Configura.ComboBox(this.jComboBoxClienteVenda, this.clientes);
+        } catch (Exception ex) {
+            Logger.getLogger(JPanelVenda.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    private void atualizaComboProduto(){
+        try {
+            Configura.ComboBox(this.jComboBoxProdutoItemVenda, this.produtos);
+        } catch (Exception ex) {
+            Logger.getLogger(JPanelVenda.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -38,31 +93,35 @@ public class JPanelVenda extends javax.swing.JPanel {
         jTextFieldQuantidadeItemVenda = new javax.swing.JTextField();
         jButtonAdicionarItemVenda = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        jTableItemVenda = new javax.swing.JTable();
         jPanel2 = new javax.swing.JPanel();
         jLabel5 = new javax.swing.JLabel();
         jComboBoxFormaPagamentoVenda = new javax.swing.JComboBox<>();
         jLabel6 = new javax.swing.JLabel();
         jTextFieldValorTotalPago = new javax.swing.JTextField();
-        jButtonPagarVenda = new javax.swing.JButton();
-
-        jComboBoxClienteVenda.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        jButtonFinalizar = new javax.swing.JButton();
+        jButtonNovo = new javax.swing.JButton();
 
         jLabel1.setText("Cliente:");
 
         jLabel2.setText("Data:");
 
-        jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Itens da Venda", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Dialog", 0, 12), new java.awt.Color(8, 1, 1))); // NOI18N
+        jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Itens da Venda", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Dialog", 1, 12), new java.awt.Color(8, 1, 1))); // NOI18N
 
         jLabel3.setText("Produto:");
 
-        jComboBoxProdutoItemVenda.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        jComboBoxProdutoItemVenda.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { " " }));
 
         jLabel4.setText("Quantidade:");
 
         jButtonAdicionarItemVenda.setText("Adicionar");
+        jButtonAdicionarItemVenda.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonAdicionarItemVendaActionPerformed(evt);
+            }
+        });
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        jTableItemVenda.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
                 {null, null, null, null},
@@ -73,7 +132,7 @@ public class JPanelVenda extends javax.swing.JPanel {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
-        jScrollPane1.setViewportView(jTable1);
+        jScrollPane1.setViewportView(jTableItemVenda);
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -121,11 +180,25 @@ public class JPanelVenda extends javax.swing.JPanel {
 
         jLabel5.setText("Forma de pagamento");
 
-        jComboBoxFormaPagamentoVenda.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        jComboBoxFormaPagamentoVenda.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "á vista", "á prazo" }));
 
         jLabel6.setText("Valor Total:");
 
-        jButtonPagarVenda.setText("Pagar");
+        jTextFieldValorTotalPago.setText("0.00");
+
+        jButtonFinalizar.setText("Finalizar");
+        jButtonFinalizar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonFinalizarActionPerformed(evt);
+            }
+        });
+
+        jButtonNovo.setText("Novo");
+        jButtonNovo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonNovoActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -144,7 +217,9 @@ public class JPanelVenda extends javax.swing.JPanel {
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addComponent(jTextFieldValorTotalPago, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jButtonPagarVenda, javax.swing.GroupLayout.PREFERRED_SIZE, 154, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(jButtonNovo, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jButtonFinalizar, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
         );
         jPanel2Layout.setVerticalGroup(
@@ -157,7 +232,8 @@ public class JPanelVenda extends javax.swing.JPanel {
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jComboBoxFormaPagamentoVenda, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jTextFieldValorTotalPago, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButtonPagarVenda))
+                    .addComponent(jButtonFinalizar)
+                    .addComponent(jButtonNovo))
                 .addGap(0, 42, Short.MAX_VALUE))
         );
 
@@ -176,8 +252,12 @@ public class JPanelVenda extends javax.swing.JPanel {
                             .addComponent(jComboBoxClienteVenda, javax.swing.GroupLayout.PREFERRED_SIZE, 428, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel2)
-                            .addComponent(jTextFieldDataVenda, javax.swing.GroupLayout.PREFERRED_SIZE, 129, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel2)
+                                .addGap(10, 236, Short.MAX_VALUE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jTextFieldDataVenda, javax.swing.GroupLayout.PREFERRED_SIZE, 129, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(0, 0, Short.MAX_VALUE)))))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -199,10 +279,115 @@ public class JPanelVenda extends javax.swing.JPanel {
         );
     }// </editor-fold>//GEN-END:initComponents
 
+    private void jButtonFinalizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonFinalizarActionPerformed
+        try {
+            if(this.validaDadosVenda()){
+                
+                this.controller.entidade.setCliente(this.clientes.get(this.jComboBoxClienteVenda.getSelectedIndex()));
+                this.controller.entidade.setData(Data.converteStringToDate(this.jTextFieldDataVenda.getText()));
+                this.controller.entidade.setFormaPagamento(FormaPagamentoEnum.values()[this.jComboBoxFormaPagamentoVenda.getSelectedIndex()]);
+                this.controller.entidade.setTotalPago(Double.parseDouble(this.jTextFieldValorTotalPago.getText()));
+                this.controller.gravar();
+                this.controller.entidade = new Venda();
+                this.controller.entidade.getItens().clear();
+                Mensagem.mostrar(this, "Venda finalizada com sucesso." );
+                this.limparCampos();
+            }            
+            
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }//GEN-LAST:event_jButtonFinalizarActionPerformed
+    
+    public void limparCampos(){
+        
+        this.jComboBoxClienteVenda.setSelectedIndex(-1);
+        this.jComboBoxFormaPagamentoVenda.setSelectedIndex(-1);
+        this.jComboBoxProdutoItemVenda.setSelectedIndex(-1);     
+        this.jTextFieldDataVenda.setText("");
+        this.jTextFieldQuantidadeItemVenda.setText("");
+        this.jTextFieldValorTotalPago.setText("");
+        this.controller.limpar();
+        this.atualizaTabelaItemVenda();
+        this.repaint();
+    }
+    
+    private void jButtonNovoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonNovoActionPerformed
+        this.limparCampos();
+    }//GEN-LAST:event_jButtonNovoActionPerformed
 
+    private void jButtonAdicionarItemVendaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonAdicionarItemVendaActionPerformed
+        
+        if(this.validaDadosItemVenda()){
+            Integer quantidade = Integer.parseInt(this.jTextFieldQuantidadeItemVenda.getText());
+            this.controller.addItem(this.produtos.get(this.jComboBoxProdutoItemVenda.getSelectedIndex()), quantidade);
+            this.atualizaTabelaItemVenda();
+            
+            this.jTextFieldValorTotalPago.setText(this.controller.entidade.getTotalVenda().toString());
+            this.jComboBoxProdutoItemVenda.setSelectedIndex(-1);
+            this.jTextFieldQuantidadeItemVenda.setText("");
+        }
+        
+    }//GEN-LAST:event_jButtonAdicionarItemVendaActionPerformed
+
+    private boolean validaDadosItemVenda(){
+        if(this.jComboBoxProdutoItemVenda.getSelectedIndex() < 0){
+            Mensagem.mostrar(this, "Selecione pelo menos um produto para adicionar na lista.");
+            return false;
+        }
+        if(!StringUtils.isNumeric(this.jTextFieldQuantidadeItemVenda.getText())){
+            Mensagem.mostrar(this, "Selecione pelo menos um produto para adicionar na lista.");
+            this.jTextFieldQuantidadeItemVenda.requestFocus();
+            return false;
+        }
+        if(Integer.parseInt(this.jTextFieldQuantidadeItemVenda.getText()) <  0){
+            Mensagem.mostrar(this, "Selecione pelo menos um produto.");
+            this.jTextFieldQuantidadeItemVenda.requestFocus();
+            return false;
+        }
+        return true;
+    }
+
+    public boolean validaDadosVenda(){
+        
+        if(this.jComboBoxClienteVenda.getSelectedIndex() <0){
+            Mensagem.mostrar(this, "Selecione pelo menos um cliente.");
+            return false;
+        }
+        if(this.jTextFieldDataVenda.getText().trim().isEmpty()){
+            Mensagem.mostrar(this, "A data da venda não pode ser vazia.");
+            this.jTextFieldDataVenda.requestFocus();
+            return false;
+        }
+        if(this.controller.entidade.getItens().size() < 1 ){
+            Mensagem.mostrar(this, "Adicione pelo menos um item para finalizar a venda.");
+            return false;
+        }
+        
+        if(this.jComboBoxFormaPagamentoVenda.getSelectedIndex() < 0){
+            Mensagem.mostrar(this, "Favor selecionar uma forma de pagamento");
+            return false;
+        }
+        
+        if(!StringUtils.isNumeric(this.jTextFieldValorTotalPago.getText())){
+            Mensagem.mostrar(this, "O valor total pago tem que ser numerico");
+            this.jTextFieldValorTotalPago.requestFocus();
+            return false;            
+        }
+        
+        if(Double.parseDouble(this.jTextFieldValorTotalPago.getText()) < 0.01){
+            Mensagem.mostrar(this, "O valor total não pode ser menor que 0.01");
+            this.jTextFieldValorTotalPago.requestFocus();
+            return false;            
+        }
+               
+        return true;
+    }
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButtonAdicionarItemVenda;
-    private javax.swing.JButton jButtonPagarVenda;
+    private javax.swing.JButton jButtonFinalizar;
+    private javax.swing.JButton jButtonNovo;
     private javax.swing.JComboBox<String> jComboBoxClienteVenda;
     private javax.swing.JComboBox<String> jComboBoxFormaPagamentoVenda;
     private javax.swing.JComboBox<String> jComboBoxProdutoItemVenda;
@@ -215,9 +400,18 @@ public class JPanelVenda extends javax.swing.JPanel {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
+    private javax.swing.JTable jTableItemVenda;
     private javax.swing.JTextField jTextFieldDataVenda;
     private javax.swing.JTextField jTextFieldQuantidadeItemVenda;
     private javax.swing.JTextField jTextFieldValorTotalPago;
     // End of variables declaration//GEN-END:variables
+
+    private void atualizaTabelaItemVenda() {
+        try {
+            Configura.tabela(this.jTableItemVenda, this.controller.entidade.getItens());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        
+    }
 }

@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Vector;
 import java.util.function.Consumer;
 import util.Constraint;
+import util.Data;
 
 public class Venda extends Entidade implements Serializable{
 
@@ -20,19 +21,21 @@ public class Venda extends Entidade implements Serializable{
     private List<ItemVenda> itens;
     private boolean pago;
 
-    public Venda(Cliente cliente, Date data, Double totalVenda, Double totalPago, int quantidadeDias, FormaPagamentoEnum formaPagamento, List<ItemVenda> itens, boolean pago) {
+    public Venda(Cliente cliente, Date data, Double totalVenda, Double totalPago, int quantidadeDias, FormaPagamentoEnum formaPagamento, boolean pago) {
+        this();
         this.cliente = cliente;
         this.data = data;
         this.totalVenda = totalVenda;
         this.totalPago = totalPago;
         this.quantidadeDias = quantidadeDias;
         this.formaPagamento = formaPagamento;
-        this.itens = itens;
         this.pago = false;
     }
 
     public Venda() {
         this.itens = new ArrayList<>();
+        this.formaPagamento = FormaPagamentoEnum.A_VISTA;
+        this.quantidadeDias = 0;
     }
     public Cliente getCliente() {
         return cliente;
@@ -51,8 +54,8 @@ public class Venda extends Entidade implements Serializable{
         this.totalVenda = 0.00;
         
         //totalValorItens = itens.stream().map((iten) -> iten.getQuantidade() * iten.getProduto().getValor()).reduce(totalValorItens, (accumulator, _item) -> accumulator + _item);
-        for (ItemVenda iten : itens) {
-            totalValorItens += iten.getQuantidade() * iten.getProduto().getValor();
+        for (ItemVenda iten : this.itens) {
+            totalValorItens += iten.getValorTotal();
         }
         
         if(this.formaPagamento.equals(FormaPagamentoEnum.A_VISTA)){
@@ -102,11 +105,21 @@ public class Venda extends Entidade implements Serializable{
 
     @Override
     public Vector toVectorDados() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        Vector<String> v = new Vector<String>();
+        v.addElement(this.cliente.getNome());
+        v.addElement(Data.converteDateToString(this.data));
+        v.addElement(this.totalPago.toString());
+        v.addElement(this.formaPagamento.getLabel()); 
+        return v;
     }
 
     @Override
     public Vector<String> toVectorColumn() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        Vector<String> columnNames = new Vector<String>();
+       columnNames.addElement("Cliente");
+       columnNames.addElement("Data");
+       columnNames.addElement("valor Total.");
+       columnNames.addElement("Forma Pag.");
+        return columnNames;
     }
 }

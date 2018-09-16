@@ -5,6 +5,14 @@
  */
 package view;
 
+import controller.RelatorioVendaController;
+import dao.ClienteDao;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import model.Cliente;
+import util.Configura;
+
 /**
  *
  * @author vagner
@@ -14,8 +22,20 @@ public class JPanelRelatorioPorPeriodo extends javax.swing.JPanel {
     /**
      * Creates new form JPanelRelatorioPorPeriodo
      */
+    
+    private RelatorioVendaController controller;
+    private List<Cliente> clientes;
     public JPanelRelatorioPorPeriodo() {
-        initComponents();
+        
+        try {
+            initComponents();
+            this.controller = new RelatorioVendaController();
+            this.clientes = new ClienteDao().buscarLista();
+            this.atualizaTabelaVendas();
+            this.atualizaComboCliente();
+        } catch (Exception ex) {
+            Logger.getLogger(JPanelRelatorioPorPeriodo.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     /**
@@ -35,7 +55,7 @@ public class JPanelRelatorioPorPeriodo extends javax.swing.JPanel {
         jTextFieldDataFim = new javax.swing.JTextField();
         jButton1 = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        jTable1Vendas = new javax.swing.JTable();
 
         jLabel1.setText("Cliente:");
 
@@ -45,9 +65,13 @@ public class JPanelRelatorioPorPeriodo extends javax.swing.JPanel {
 
         jLabel3.setText("Data Fim:");
 
+        jTextFieldDataInicio.setColumns(10);
+
+        jTextFieldDataFim.setCursor(new java.awt.Cursor(java.awt.Cursor.TEXT_CURSOR));
+
         jButton1.setText("Pesquisar");
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        jTable1Vendas.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
                 {null, null, null, null},
@@ -58,7 +82,7 @@ public class JPanelRelatorioPorPeriodo extends javax.swing.JPanel {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
-        jScrollPane1.setViewportView(jTable1);
+        jScrollPane1.setViewportView(jTable1Vendas);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -116,8 +140,25 @@ public class JPanelRelatorioPorPeriodo extends javax.swing.JPanel {
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
+    private javax.swing.JTable jTable1Vendas;
     private javax.swing.JTextField jTextFieldDataFim;
     private javax.swing.JTextField jTextFieldDataInicio;
     // End of variables declaration//GEN-END:variables
+
+    private void atualizaTabelaVendas() {
+        try {
+            this.controller.buscarLista();
+            Configura.tabela(this.jTable1Vendas, this.controller.lista);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void atualizaComboCliente() {
+        try {
+            Configura.ComboBox(this.jComboBoxCliente, this.clientes);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 }

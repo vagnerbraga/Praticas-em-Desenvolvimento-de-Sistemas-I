@@ -1,17 +1,11 @@
 package util;
 
-import enumered.SexoEnum;
 import inerfaces.IPreparaDadosParaTabela;
-import java.awt.Component;
-import java.awt.Dimension;
-import java.awt.GridBagLayout;
 import java.util.List;
 import java.util.Vector;
-import javax.swing.DefaultComboBoxModel;
 import javax.swing.JComboBox;
 import javax.swing.JTable;
 
-import model.Produto;
 
 public class Configura {
     
@@ -21,8 +15,9 @@ public class Configura {
      */
     public static void tabela(JTable tabela, List<? extends IPreparaDadosParaTabela> dados){
         
+        tabela.removeAll();
         if(dados != null && !dados.isEmpty()){
-
+            
             Vector<Vector> rowsData = new Vector<Vector>();
             
             dados.forEach((item)->{

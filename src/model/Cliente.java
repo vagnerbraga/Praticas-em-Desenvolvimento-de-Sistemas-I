@@ -47,6 +47,14 @@ public class Cliente extends Entidade implements Serializable {
     public void setSexo(SexoEnum sexo) {
         this.sexo = sexo;
     }
+
+    @Override
+    public String toString() {
+        return this.nome + " - "+ this.cpf;
+    }
+    
+    
+    
     @Override
     public Vector toVectorDados() {
        Vector<String> v = new Vector<String>();

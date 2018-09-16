@@ -1,19 +1,9 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package view;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import javax.swing.JDialog;
-import util.Configura;
 
-/**
- *
- * @author vagner
- */
 public class Principal extends javax.swing.JFrame {
 
     JPanelCliente jPanelCliente;
@@ -135,7 +125,7 @@ public class Principal extends javax.swing.JFrame {
         dialog.add(new JPanelProduto(), BorderLayout.CENTER);
         dialog.pack();
         dialog.setLocation(300, 300);
-        dialog.setTitle("Colour Dialog");
+        dialog.setTitle("Produtos");
         dialog.setVisible(true);
 //        dialog.setLocationRelativeTo(this);
         this.repaint();
