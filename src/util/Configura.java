@@ -1,10 +1,12 @@
 package util;
 
 import inerfaces.IPreparaDadosParaTabela;
+import java.time.Clock;
 import java.util.List;
 import java.util.Vector;
 import javax.swing.JComboBox;
 import javax.swing.JTable;
+import javax.swing.JTextField;
 
 
 public class Configura {
@@ -23,7 +25,7 @@ public class Configura {
             dados.forEach((item)->{
                 rowsData.addElement(item.toVectorDados());
             });
-                
+            
             tabela.setModel(new javax.swing.table.DefaultTableModel(
                 rowsData, dados.get(0).toVectorColumn()
             ));
@@ -39,4 +41,6 @@ public class Configura {
         });
         return combo;
     }
+    
+    
 }
