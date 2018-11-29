@@ -211,16 +211,24 @@ public class JPanelControleEstoque extends javax.swing.JPanel {
     }//GEN-LAST:event_jButtonFecharActionPerformed
 
     private void jTableEstoqueMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTableEstoqueMouseClicked
-        this.controller.entidade = this.lista.get(this.jTableEstoque.getSelectedRow());
+        this.controller.getObjectToJtable(evt);
         
-        //this.jComboBoxProdutoEstoque.setSelectedIndex(this.);
+        int index = 0;
+        for (Produto produto : produtos) {
+            if(this.controller.entidade.getProduto().getId().equals(produto.getId())){
+                this.jComboBoxProdutoEstoque.setSelectedIndex(index);
+                break;
+            }
+            index++;
+        }        
+        this.jTextFieldQuantidadeEstoque.setText(this.controller.entidade.getQuantidade().toString());
         
     }//GEN-LAST:event_jTableEstoqueMouseClicked
 
     private void atualizarProduto(){
         try {
             this.produtos.clear();
-            this.produtos = this.produtoDao.buscarLista();
+            this.produtos = this.produtoDao.buscarLista(new Produto());
             this.jComboBoxProdutoEstoque.removeAllItems();
             this.jComboBoxProdutoEstoque.setSelectedIndex(-1);
             produtos.forEach((produto) -> {

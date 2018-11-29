@@ -3,6 +3,7 @@ package controller;
 import inerfaces.Dao;
 import java.util.ArrayList;
 import java.util.List;
+import javax.swing.JTable;
 import model.Entidade;
 
 public abstract class GenericCotroller<T extends Entidade> {
@@ -30,6 +31,7 @@ public abstract class GenericCotroller<T extends Entidade> {
         }
     }
     
+    public abstract void limpar();
     
     public void deletar(){
         try {
@@ -52,10 +54,16 @@ public abstract class GenericCotroller<T extends Entidade> {
     
     public void buscarLista(){
         try {
-            this.lista = this.dao.buscarLista();
+            this.lista = this.dao.buscarLista(this.entidade);
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+    
+    public void getObjectToJtable(java.awt.event.MouseEvent evt){
+        JTable source = (JTable) evt.getSource();
+        int row = source.rowAtPoint(evt.getPoint());
+        this.entidade = this.lista.get(row);        
     }
     
 }

@@ -15,7 +15,8 @@ public class Produto extends Entidade implements Serializable{
         super();
     }
 
-    public Produto(String nome, String tipoEmbalagem, Double quantidadeEmbalagem, Double valor) {
+    public Produto(Long id, String nome, String tipoEmbalagem, Double quantidadeEmbalagem, Double valor) {
+        this.id = id;
         this.nome = nome;
         this.tipoEmbalagem = tipoEmbalagem;
         this.quantidadeEmbalagem = quantidadeEmbalagem;

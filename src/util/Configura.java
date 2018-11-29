@@ -1,12 +1,15 @@
 package util;
 
 import inerfaces.IPreparaDadosParaTabela;
+import java.awt.event.MouseEvent;
 import java.time.Clock;
 import java.util.List;
 import java.util.Vector;
 import javax.swing.JComboBox;
 import javax.swing.JTable;
 import javax.swing.JTextField;
+import model.Cliente;
+import model.Entidade;
 
 
 public class Configura {
@@ -41,6 +44,4 @@ public class Configura {
         });
         return combo;
     }
-    
-    
 }

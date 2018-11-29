@@ -12,14 +12,14 @@ public class EstoqueController extends GenericCotroller<ControleEstoque>{
     @Override
     public void gravar() {
         
-        this.buscarLista();
-        //verifica se já tem cadastro
-        this.lista.forEach((it)->{
-            if(it.getProduto().getId().equals(this.entidade.getProduto().getId())){
-                this.entidade.setQuantidade(this.entidade.getQuantidade()+ it.getQuantidade());
-                this.entidade.setId(it.getId());
-            }
-        });
+//        this.buscarLista();
+//        //verifica se já tem cadastro
+//        this.lista.forEach((it)->{
+//            if(it.getProduto().getId().equals(this.entidade.getProduto().getId())){
+//                this.entidade.setQuantidade(this.entidade.getQuantidade()+ it.getQuantidade());
+//                this.entidade.setId(it.getId());
+//            }
+//        });
         
         super.gravar();
     }

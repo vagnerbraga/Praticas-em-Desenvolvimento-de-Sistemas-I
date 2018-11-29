@@ -12,6 +12,8 @@ public interface Dao<T> {
     
     public T selecionar(Long id) throws  Exception;
     
-    public List<T> buscarLista() throws Exception;
+    public List<T> buscarLista(T entidade) throws Exception;
+    
+    public String pesquisar(T entidade) throws Exception;
         
 }

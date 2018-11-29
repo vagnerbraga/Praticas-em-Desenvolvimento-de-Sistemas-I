@@ -113,6 +113,11 @@ public class JPanelProduto extends javax.swing.JPanel {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
+        jTableProdutos.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jTableProdutosMouseClicked(evt);
+            }
+        });
         jScrollPane2.setViewportView(jTableProdutos);
 
         add(jScrollPane2);
@@ -153,10 +158,24 @@ public class JPanelProduto extends javax.swing.JPanel {
 
             this.controller.gravar();
             this.limparCampos();
+            this.controller.limpar();
+            this.controller.buscarLista();
             this.atualizarTabela();
         }            
     }//GEN-LAST:event_jButtonSalvarActionPerformed
 
+    private void jTableProdutosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTableProdutosMouseClicked
+        this.controller.getObjectToJtable(evt);
+        this.popularDados();
+    }//GEN-LAST:event_jTableProdutosMouseClicked
+
+    private void popularDados(){
+       this.jTextFieldNomeProduto.setText(this.controller.entidade.getNome());
+       this.jTextFieldTipoEmbalagem.setText(this.controller.entidade.getTipoEmbalagem());
+       this.jTextFieldQuantidadeEmbalagem.setText(this.controller.entidade.getQuantidadeEmbalagem().toString());
+       this.jTextFieldValorProduto.setText( this.controller.entidade.getValor().toString()); 
+    }
+    
     public void limparCampos(){
         this.jTextFieldNomeProduto.setText("");
         this.jTextFieldTipoEmbalagem.setText("");

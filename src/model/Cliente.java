@@ -13,13 +13,16 @@ public class Cliente extends Entidade implements Serializable {
 
     public Cliente() {
         super();
+        this.sexo = SexoEnum.MASCULINO;
     }
 
-    public Cliente(String nome, String cpf, String rg) {
+    public Cliente(Long id,String nome, String cpf, String rg, SexoEnum sexo) {
+        this.id = id;
         this.nome = nome;
         this.cpf = cpf;
         this.rg = rg;
         this.ativo = true;
+        this.sexo = sexo;
     }
 
     public String getNome() {
@@ -59,8 +62,8 @@ public class Cliente extends Entidade implements Serializable {
     public Vector toVectorDados() {
        Vector<String> v = new Vector<String>();
         v.addElement(this.nome);
-        v.addElement(this.rg);        
         v.addElement(this.cpf);
+        v.addElement(this.rg);
         v.addElement(this.sexo.getLabel());
         return v;
     }
@@ -69,8 +72,8 @@ public class Cliente extends Entidade implements Serializable {
     public Vector<String> toVectorColumn() {
         Vector<String> columnNames = new Vector<String>();
         columnNames.addElement("Nome");
-        columnNames.addElement("RG");
         columnNames.addElement("CPF");
+        columnNames.addElement("RG");
         columnNames.addElement("Sexo");
         return columnNames;
     }

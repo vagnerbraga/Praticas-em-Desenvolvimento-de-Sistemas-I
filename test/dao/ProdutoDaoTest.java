@@ -42,7 +42,7 @@ public class ProdutoDaoTest {
     public void testSalvar() throws Exception {
         Arquivo.limparArquivo(Arquivo.PRODUTO_DAT);
         System.out.println("salvar");
-        Produto entidade = new Produto("Nome do produto 001", "Litro", 1.00, 12.50);
+        Produto entidade = new Produto(1L, "Nome do produto 001", "Litro", 1.00, 12.50);
         dao.salvar(entidade);
         
         Produto p = dao.selecionar(1L);
@@ -107,7 +107,7 @@ public class ProdutoDaoTest {
     @Test
     public void testBuscarLista() throws Exception{
         System.out.println("buscar Lista");
-        List<Produto> lista = dao.buscarLista();
+        List<Produto> lista = dao.buscarLista(new Produto());
         
         lista.forEach((item)->{
             System.out.println("dao.ProdutoDaoTest.testBuscarLista() " + item.getNome());
