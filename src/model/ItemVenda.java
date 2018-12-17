@@ -21,6 +21,14 @@ public class ItemVenda extends Entidade implements Serializable{
         this.valor = valor;
     }
 
+    public Double getValor() {
+        return valor;
+    }
+
+    public void setValor(Double valor) {
+        this.valor = valor;
+    }
+
     public Double getValorTotal(){
       return this.valor * this.quantidade;  
     }

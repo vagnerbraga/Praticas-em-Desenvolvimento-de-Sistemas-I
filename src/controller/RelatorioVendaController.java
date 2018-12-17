@@ -34,10 +34,12 @@ public class RelatorioVendaController extends GenericCotroller<Venda>{
             
         } catch (Exception e) {
             e.printStackTrace();
-        }
-        
-        
-        
+        }      
+    }
+
+    @Override
+    public void limpar() {
+        this.entidade = new Venda();
     }
 
 }

@@ -8,14 +8,10 @@ package view;
 import controller.VendaController;
 import dao.ClienteDao;
 import dao.ProdutoDao;
-import dao.VendaDao;
 import enumered.FormaPagamentoEnum;
-import java.text.SimpleDateFormat;
-import java.util.Formatter;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.JFormattedTextField;
 import model.Cliente;
 import model.Produto;
 import model.Venda;
@@ -43,13 +39,14 @@ public class JPanelVenda extends javax.swing.JPanel {
             initComponents();
             
             this.controller = new VendaController();
-            this.clientes = new ClienteDao().buscarLista();
-            this.produtos = new ProdutoDao().buscarLista();
+            this.clientes = new ClienteDao().buscarLista(null);
+            this.produtos = new ProdutoDao().buscarLista(null);
             
             this.atualizaComboCliente();
             this.atualizaComboProduto();
             this.atualizaTabelaItemVenda();
             this.limparCampos();
+            this.jPanelItensVenda.setVisible(false);
         } catch (Exception ex) {
             Logger.getLogger(JPanelVenda.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -86,7 +83,7 @@ public class JPanelVenda extends javax.swing.JPanel {
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jTextFieldDataVenda = new javax.swing.JTextField();
-        jPanel1 = new javax.swing.JPanel();
+        jPanelItensVenda = new javax.swing.JPanel();
         jLabel3 = new javax.swing.JLabel();
         jComboBoxProdutoItemVenda = new javax.swing.JComboBox<>();
         jLabel4 = new javax.swing.JLabel();
@@ -106,7 +103,8 @@ public class JPanelVenda extends javax.swing.JPanel {
 
         jLabel2.setText("Data:");
 
-        jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Itens da Venda", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Dialog", 1, 12), new java.awt.Color(8, 1, 1))); // NOI18N
+        jPanelItensVenda.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Itens da Venda", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Dialog", 1, 12), new java.awt.Color(8, 1, 1))); // NOI18N
+        jPanelItensVenda.setEnabled(false);
 
         jLabel3.setText("Produto:");
 
@@ -134,40 +132,40 @@ public class JPanelVenda extends javax.swing.JPanel {
         ));
         jScrollPane1.setViewportView(jTableItemVenda);
 
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
+        javax.swing.GroupLayout jPanelItensVendaLayout = new javax.swing.GroupLayout(jPanelItensVenda);
+        jPanelItensVenda.setLayout(jPanelItensVendaLayout);
+        jPanelItensVendaLayout.setHorizontalGroup(
+            jPanelItensVendaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanelItensVendaLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGroup(jPanelItensVendaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanelItensVendaLayout.createSequentialGroup()
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 681, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(0, 12, Short.MAX_VALUE))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanelItensVendaLayout.createSequentialGroup()
+                        .addGroup(jPanelItensVendaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jComboBoxProdutoItemVenda, javax.swing.GroupLayout.PREFERRED_SIZE, 408, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel3))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGroup(jPanelItensVendaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanelItensVendaLayout.createSequentialGroup()
                                 .addComponent(jTextFieldQuantidadeItemVenda, javax.swing.GroupLayout.PREFERRED_SIZE, 156, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(jButtonAdicionarItemVenda, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelItensVendaLayout.createSequentialGroup()
                                 .addComponent(jLabel4)
                                 .addGap(0, 0, Short.MAX_VALUE)))
                         .addContainerGap())))
         );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
+        jPanelItensVendaLayout.setVerticalGroup(
+            jPanelItensVendaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanelItensVendaLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGroup(jPanelItensVendaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
                     .addComponent(jLabel4))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGroup(jPanelItensVendaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jComboBoxProdutoItemVenda, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jTextFieldQuantidadeItemVenda, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jButtonAdicionarItemVenda))
@@ -186,7 +184,8 @@ public class JPanelVenda extends javax.swing.JPanel {
 
         jTextFieldValorTotalPago.setText("0.00");
 
-        jButtonFinalizar.setText("Finalizar");
+        jButtonFinalizar.setText("Inicar");
+        jButtonFinalizar.setActionCommand("Iniciar");
         jButtonFinalizar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButtonFinalizarActionPerformed(evt);
@@ -245,7 +244,7 @@ public class JPanelVenda extends javax.swing.JPanel {
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                     .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jPanelItensVenda, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel1)
@@ -272,7 +271,7 @@ public class JPanelVenda extends javax.swing.JPanel {
                     .addComponent(jComboBoxClienteVenda, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jTextFieldDataVenda, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jPanelItensVenda, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
@@ -286,12 +285,13 @@ public class JPanelVenda extends javax.swing.JPanel {
                 this.controller.entidade.setCliente(this.clientes.get(this.jComboBoxClienteVenda.getSelectedIndex()));
                 this.controller.entidade.setData(Data.converteStringToDate(this.jTextFieldDataVenda.getText()));
                 this.controller.entidade.setFormaPagamento(FormaPagamentoEnum.values()[this.jComboBoxFormaPagamentoVenda.getSelectedIndex()]);
-                this.controller.entidade.setTotalPago(Double.parseDouble(this.jTextFieldValorTotalPago.getText()));
+                //this.controller.entidade.setTotalPago(Double.parseDouble(this.jTextFieldValorTotalPago.getText()));
                 this.controller.gravar();
-                this.controller.entidade = new Venda();
+                //this.controller.entidade = new Venda();
                 this.controller.entidade.getItens().clear();
-                Mensagem.mostrar(this, "Venda finalizada com sucesso." );
-                this.limparCampos();
+                Mensagem.mostrar(this, "Venda iniciada com sucesso." );
+                //this.limparCampos();
+                this.jPanelItensVenda.setVisible(true);
             }            
             
         } catch (Exception e) {
@@ -318,15 +318,20 @@ public class JPanelVenda extends javax.swing.JPanel {
 
     private void jButtonAdicionarItemVendaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonAdicionarItemVendaActionPerformed
         
-        if(this.validaDadosItemVenda()){
-            Integer quantidade = Integer.parseInt(this.jTextFieldQuantidadeItemVenda.getText());
-            this.controller.addItem(this.produtos.get(this.jComboBoxProdutoItemVenda.getSelectedIndex()), quantidade);
-            this.atualizaTabelaItemVenda();
-            
-            this.jTextFieldValorTotalPago.setText(this.controller.entidade.getTotalVenda().toString());
-            this.jComboBoxProdutoItemVenda.setSelectedIndex(-1);
-            this.jTextFieldQuantidadeItemVenda.setText("");
+        try {
+            if(this.validaDadosItemVenda()){
+                Integer quantidade = Integer.parseInt(this.jTextFieldQuantidadeItemVenda.getText());
+                this.controller.addItem(this.produtos.get(this.jComboBoxProdutoItemVenda.getSelectedIndex()), quantidade);
+                this.atualizaTabelaItemVenda();
+
+                this.jTextFieldValorTotalPago.setText(this.controller.entidade.getTotalVenda().toString());
+                this.jComboBoxProdutoItemVenda.setSelectedIndex(-1);
+                this.jTextFieldQuantidadeItemVenda.setText("");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
+        
         
     }//GEN-LAST:event_jButtonAdicionarItemVendaActionPerformed
 
@@ -359,27 +364,27 @@ public class JPanelVenda extends javax.swing.JPanel {
             this.jTextFieldDataVenda.requestFocus();
             return false;
         }
-        if(this.controller.entidade.getItens().size() < 1 ){
-            Mensagem.mostrar(this, "Adicione pelo menos um item para finalizar a venda.");
-            return false;
-        }
+//        if(this.controller.entidade.getItens().size() < 1 ){
+//            Mensagem.mostrar(this, "Adicione pelo menos um item para finalizar a venda.");
+//            return false;
+//        }
         
         if(this.jComboBoxFormaPagamentoVenda.getSelectedIndex() < 0){
             Mensagem.mostrar(this, "Favor selecionar uma forma de pagamento");
             return false;
         }
         
-        if(!StringUtils.isNumeric(this.jTextFieldValorTotalPago.getText())){
-            Mensagem.mostrar(this, "O valor total pago tem que ser numerico");
-            this.jTextFieldValorTotalPago.requestFocus();
-            return false;            
-        }
+//        if(!StringUtils.isNumeric(this.jTextFieldValorTotalPago.getText())){
+//            Mensagem.mostrar(this, "O valor total pago tem que ser numerico");
+//            this.jTextFieldValorTotalPago.requestFocus();
+//            return false;            
+//        }
         
-        if(Double.parseDouble(this.jTextFieldValorTotalPago.getText()) < 0.01){
-            Mensagem.mostrar(this, "O valor total não pode ser menor que 0.01");
-            this.jTextFieldValorTotalPago.requestFocus();
-            return false;            
-        }
+//        if(Double.parseDouble(this.jTextFieldValorTotalPago.getText()) < 0.01){
+//            Mensagem.mostrar(this, "O valor total não pode ser menor que 0.01");
+//            this.jTextFieldValorTotalPago.requestFocus();
+//            return false;            
+//        }
                
         return true;
     }
@@ -397,8 +402,8 @@ public class JPanelVenda extends javax.swing.JPanel {
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
-    private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
+    private javax.swing.JPanel jPanelItensVenda;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jTableItemVenda;
     private javax.swing.JTextField jTextFieldDataVenda;

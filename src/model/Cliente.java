@@ -16,6 +16,11 @@ public class Cliente extends Entidade implements Serializable {
         this.sexo = SexoEnum.MASCULINO;
     }
 
+    public Cliente(Long id,String nome) {
+        this.id = id;
+        this.nome = nome;
+    }
+    
     public Cliente(Long id,String nome, String cpf, String rg, SexoEnum sexo) {
         this.id = id;
         this.nome = nome;

@@ -7,8 +7,11 @@ package view;
 
 import controller.RelatorioVendaController;
 import dao.ClienteDao;
+import java.util.Arrays;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JTable;
@@ -16,6 +19,7 @@ import model.Cliente;
 import model.Venda;
 import util.Configura;
 import util.Data;
+import util.IReportManager;
 import util.Mensagem;
 
 /**
@@ -36,7 +40,7 @@ public class JPanelRelatorioPorPeriodo extends javax.swing.JPanel {
         try {
             initComponents();
             this.controller = new RelatorioVendaController();
-            this.clientes = new ClienteDao().buscarLista();
+            this.clientes = new ClienteDao().buscarLista(null);
             this.controller.buscarLista();
             this.venda = new Venda();
             this.jPanelItensVendas.setVisible(false);
@@ -69,10 +73,9 @@ public class JPanelRelatorioPorPeriodo extends javax.swing.JPanel {
         jPanelItensVendas = new javax.swing.JPanel();
         jScrollPane2 = new javax.swing.JScrollPane();
         jTableItensVenda = new javax.swing.JTable();
+        jButtonImprimir = new javax.swing.JButton();
 
         jLabel1.setText("Cliente:");
-
-        jComboBoxCliente.setSelectedIndex(-1);
 
         jLabel2.setText("Data Inicio:");
 
@@ -120,10 +123,21 @@ public class JPanelRelatorioPorPeriodo extends javax.swing.JPanel {
         ));
         jScrollPane2.setViewportView(jTableItensVenda);
 
+        jButtonImprimir.setText("Imprimir");
+        jButtonImprimir.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonImprimirActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanelItensVendasLayout = new javax.swing.GroupLayout(jPanelItensVendas);
         jPanelItensVendas.setLayout(jPanelItensVendasLayout);
         jPanelItensVendasLayout.setHorizontalGroup(
             jPanelItensVendasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelItensVendasLayout.createSequentialGroup()
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addComponent(jButtonImprimir)
+                .addContainerGap())
             .addComponent(jScrollPane2)
         );
         jPanelItensVendasLayout.setVerticalGroup(
@@ -131,7 +145,9 @@ public class JPanelRelatorioPorPeriodo extends javax.swing.JPanel {
             .addGroup(jPanelItensVendasLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(91, Short.MAX_VALUE))
+                .addGap(14, 14, 14)
+                .addComponent(jButtonImprimir)
+                .addContainerGap(46, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
@@ -153,7 +169,7 @@ public class JPanelRelatorioPorPeriodo extends javax.swing.JPanel {
                                 .addComponent(jTextFieldDataInicio, javax.swing.GroupLayout.PREFERRED_SIZE, 155, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(jTextFieldDataFim, javax.swing.GroupLayout.PREFERRED_SIZE, 155, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 37, Short.MAX_VALUE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 80, Short.MAX_VALUE)
                                 .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 153, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jPanelItensVendas, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
@@ -232,9 +248,20 @@ public class JPanelRelatorioPorPeriodo extends javax.swing.JPanel {
         
     }//GEN-LAST:event_jTable1VendasMouseClicked
 
+    private void jButtonImprimirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonImprimirActionPerformed
+        
+        if(this.venda!=null && this.venda.getId()!= null){
+            
+            Map<String, Object> map = new HashMap<String, Object>();
+            
+            IReportManager.show(map, Arrays.asList(this.venda));
+        }
+    }//GEN-LAST:event_jButtonImprimirActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButtonImprimir;
     private javax.swing.JComboBox<String> jComboBoxCliente;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
